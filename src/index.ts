@@ -4,6 +4,7 @@ import { copyAttachments } from "./attachments/copyAttachments";
 import { readConfig } from "./config";
 import { createMarkdown } from "./markdown/createMarkdown";
 import { sanitizeFileName } from "./markdown/sanitizeFileName";
+import { loadClaudeConversations } from "./parser/loadClaudeConversations";
 import { loadConversations } from "./parser/loadConversations";
 import { parseConversations } from "./parser/parseConversation";
 import { detectTopic } from "./topics/detectTopic";
@@ -14,11 +15,13 @@ async function main(): Promise<void> {
   const config = readConfig(process.argv);
   const loadResult = await loadConversations(config.inputDir);
   const parseResult = parseConversations(loadResult.conversations);
+  const claudeResult = await loadClaudeConversations(config.inputDir);
+  const conversations = [...parseResult.conversations, ...claudeResult.conversations];
   const chatsRoot = path.join(config.outputDir, "AI Chats");
   const usedPaths = new Set<string>();
   let markdownFiles = 0;
 
-  for (const conversation of parseResult.conversations) {
+  for (const conversation of conversations) {
     const topic = detectTopic(
       conversation.title,
       conversation.messages.map((message) => message.text)
@@ -33,12 +36,16 @@ async function main(): Promise<void> {
   }
 
   const attachmentsCopied = await copyAttachments(config.inputDir, config.outputDir);
-  const failedFiles = loadResult.failedFiles.length + parseResult.failedConversations.length;
+  const failedFiles =
+    loadResult.failedFiles.length +
+    parseResult.failedConversations.length +
+    claudeResult.failedFiles.length +
+    claudeResult.failedConversations.length;
 
   logger.info("");
   logger.info("Summary");
-  logger.info(`- Total JSON files: ${loadResult.totalFiles}`);
-  logger.info(`- Total conversations: ${parseResult.conversations.length}`);
+  logger.info(`- Total JSON files: ${loadResult.totalFiles + claudeResult.totalFiles}`);
+  logger.info(`- Total conversations: ${conversations.length}`);
   logger.info(`- Total markdown files: ${markdownFiles}`);
   logger.info(`- Total attachments copied: ${attachmentsCopied}`);
   logger.info(`- Failed files/conversations: ${failedFiles}`);
@@ -47,8 +54,16 @@ async function main(): Promise<void> {
     logger.warn(`Corrupted or unsupported JSON file skipped: ${file}`);
   }
 
+  for (const file of claudeResult.failedFiles) {
+    logger.warn(`Corrupted or unsupported Claude JSON file skipped: ${file}`);
+  }
+
   for (const conversation of parseResult.failedConversations) {
     logger.warn(`Conversation skipped: ${conversation}`);
+  }
+
+  for (const conversation of claudeResult.failedConversations) {
+    logger.warn(`Claude conversation skipped: ${conversation}`);
   }
 }
 

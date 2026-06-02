@@ -3,7 +3,7 @@ import type {
   ChatGptConversation,
   ChatGptMessage,
   ChatGptNode,
-  ChatGptRole,
+  ChatRole,
   ParsedConversation,
   ParsedMessage,
   ParseResult
@@ -37,6 +37,7 @@ export function parseConversation(conversation: ChatGptConversation): ParsedConv
 
   return {
     id,
+    source: "chatgpt",
     title,
     createdAt: firstMessageDate ?? createdAt,
     updatedAt,
@@ -146,7 +147,7 @@ function partToText(part: unknown): string {
   return "";
 }
 
-function normalizeRole(role: string | undefined): ChatGptRole {
+function normalizeRole(role: string | undefined): ChatRole {
   if (role === "user" || role === "assistant" || role === "system" || role === "tool") {
     return role;
   }

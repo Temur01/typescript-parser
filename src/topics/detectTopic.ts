@@ -1,31 +1,5 @@
 const TOPICS = [
   {
-    name: "AI Tools",
-    keywords: ["chatgpt", "codex", "claude", "prompt", "cursor", "copilot", "agent", "perplexity"]
-  },
-  {
-    name: "AI",
-    keywords: ["artificial intelligence", "machine learning", "llm", "openai", "rag", "embedding", "neural", "quantum"]
-  },
-  {
-    name: "Programming",
-    keywords: [
-      "typescript",
-      "javascript",
-      "react",
-      "next.js",
-      "nextjs",
-      "node",
-      "frontend",
-      "backend",
-      "api",
-      "database",
-      "github",
-      "bug",
-      "code"
-    ]
-  },
-  {
     name: "Health",
     keywords: ["health", "fitness", "weight", "walking", "running", "diet", "sleep", "workout", "meal", "doctor", "medicine"]
   },
@@ -64,6 +38,32 @@ const TOPICS = [
   {
     name: "Legal",
     keywords: ["legal", "law", "contract", "policy", "terms", "privacy", "compliance", "rights"]
+  },
+  {
+    name: "Programming",
+    keywords: [
+      "typescript",
+      "javascript",
+      "react",
+      "next.js",
+      "nextjs",
+      "node",
+      "frontend",
+      "backend",
+      "api",
+      "database",
+      "github",
+      "bug",
+      "code"
+    ]
+  },
+  {
+    name: "AI",
+    keywords: ["artificial intelligence", "machine learning", "llm", "openai", "rag", "embedding", "neural", "quantum"]
+  },
+  {
+    name: "AI Tools",
+    keywords: ["chatgpt", "codex", "claude", "prompt", "cursor", "copilot", "agent", "perplexity"]
   }
 ] as const;
 

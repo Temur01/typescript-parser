@@ -21,7 +21,7 @@ export function createMarkdown(conversation: ParsedConversation, topic: string):
     [
       "## Metadata",
       "",
-      "- Source: ChatGPT Export",
+      `- Source: ${sourceLabel(conversation.source)}`,
       `- Created: ${formatDate(conversation.createdAt)}`,
       `- Updated: ${formatDate(conversation.updatedAt)}`,
       `- Topic: [[${topic}]]`
@@ -30,4 +30,8 @@ export function createMarkdown(conversation: ParsedConversation, topic: string):
   ];
 
   return [...header, ...sections].join("\n\n");
+}
+
+function sourceLabel(source: ParsedConversation["source"]): string {
+  return source === "claude" ? "Claude Export" : "ChatGPT Export";
 }

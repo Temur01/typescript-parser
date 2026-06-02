@@ -1,4 +1,5 @@
-export type ChatGptRole = "user" | "assistant" | "system" | "tool" | "unknown";
+export type ConversationSource = "chatgpt" | "claude";
+export type ChatRole = "user" | "assistant" | "system" | "tool" | "unknown";
 
 export interface ChatGptConversation {
   id?: string;
@@ -35,13 +36,14 @@ export interface ChatGptMessage {
 }
 
 export interface ParsedMessage {
-  role: ChatGptRole;
+  role: ChatRole;
   text: string;
   createdAt?: Date;
 }
 
 export interface ParsedConversation {
   id: string;
+  source: ConversationSource;
   title: string;
   createdAt: Date;
   updatedAt: Date;

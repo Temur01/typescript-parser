@@ -1,14 +1,14 @@
 # typescript-parser
 
-`typescript-parser` is a Bun + TypeScript CLI that turns a ChatGPT data export into a clean, searchable Obsidian knowledge base.
+`typescript-parser` is a Bun + TypeScript CLI that turns ChatGPT and Claude data exports into a clean, searchable Obsidian knowledge base.
 
-It is designed as a general-purpose importer for anyone who wants to keep their ChatGPT conversations locally. The tool reads modern ChatGPT exports, including split `conversations-*.json` files, converts every conversation into Markdown, and organizes notes into common topic folders such as health, education, career, finance, programming, travel, and more.
+It is designed as a general-purpose importer for anyone who wants to keep AI conversations locally. The tool reads modern ChatGPT exports, Claude `conversations.json` exports, converts every conversation into Markdown, and organizes notes into common topic folders such as health, education, career, finance, programming, travel, and more.
 
 ## Who This Is For
 
 Use this project if you want to:
 
-- Back up ChatGPT conversations in a readable local format
+- Back up ChatGPT or Claude conversations in a readable local format
 - Import AI chats into an Obsidian vault
 - Organize past conversations by common life and work themes
 - Keep private exports out of public repositories
@@ -16,7 +16,8 @@ Use this project if you want to:
 
 ## Features
 
-- Loads all `conversations-*.json` files from an export directory
+- Loads ChatGPT `conversations-*.json` files from an export directory
+- Loads Claude `conversations.json` exports from an export directory
 - Handles malformed JSON files and partially broken conversations without stopping the full run
 - Generates Obsidian-compatible Markdown with YAML frontmatter
 - Preserves Markdown content such as code blocks, tables, headings, links, and lists
@@ -51,7 +52,9 @@ Install dependencies:
 bun install
 ```
 
-## Export ChatGPT Data
+## Export Your AI Data
+
+### ChatGPT
 
 1. Open ChatGPT in your browser.
 2. Go to Settings.
@@ -73,6 +76,27 @@ file_*.dat
 
 The exact list can vary. The important files for this tool are the `conversations-*.json` files. Attachment files are optional, but they will be copied if present.
 
+### Claude
+
+Export your Claude data from Claude settings, download the archive, and unzip it. Claude exports commonly include:
+
+```txt
+conversations.json
+users.json
+projects/
+  project-id.json
+  another-project-id.json
+```
+
+The parser auto-detects Claude conversations from both:
+
+```txt
+conversations.json
+projects/*.json
+```
+
+Project JSON files can contain a project object with nested `conversations`, `chats`, or `chat_conversations`. Project names are added to generated note titles when available.
+
 ## Prepare Input
 
 Place your unzipped export files inside:
@@ -92,7 +116,18 @@ typescript-parser/
     file_00000000000000000000000000000000.dat
 ```
 
-Important: `export/*` is ignored by git because ChatGPT exports contain private data. Do not commit your export folder to a public repository.
+Claude example:
+
+```txt
+typescript-parser/
+  export/
+    conversations.json
+    users.json
+    projects/
+      00000000-0000-0000-0000-000000000000.json
+```
+
+Important: `export/*` is ignored by git because AI exports contain private data. Do not commit your export folder to a public repository.
 
 ## Run
 
@@ -142,7 +177,7 @@ Attachments are copied to:
 output/Attachments/
 ```
 
-Do not commit or push the `output/` folder. It contains generated notes and copied attachments from private ChatGPT data. The folder is ignored by git by default.
+Do not commit or push the `output/` folder. It contains generated notes and copied attachments from private AI data. The folder is ignored by git by default.
 
 Topic folders include:
 
@@ -289,7 +324,7 @@ docs/screenshots/
 
 ## Privacy
 
-This project is intended for public GitHub use, but ChatGPT export files and generated notes are private. The `.gitignore` excludes `export/*`, `output/`, `.env`, build artifacts, and dependencies.
+This project is intended for public GitHub use, but ChatGPT/Claude export files and generated notes are private. The `.gitignore` excludes `export/*`, `output/`, `.env`, build artifacts, and dependencies.
 
 Never push these folders to GitHub:
 
