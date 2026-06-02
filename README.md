@@ -142,6 +142,8 @@ Attachments are copied to:
 output/Attachments/
 ```
 
+Do not commit or push the `output/` folder. It contains generated notes and copied attachments from private ChatGPT data. The folder is ignored by git by default.
+
 Topic folders include:
 
 ```txt
@@ -287,7 +289,14 @@ docs/screenshots/
 
 ## Privacy
 
-This project is intended for public GitHub use, but ChatGPT export files are private. The `.gitignore` excludes `export/*`, `output/`, `.env`, build artifacts, and dependencies.
+This project is intended for public GitHub use, but ChatGPT export files and generated notes are private. The `.gitignore` excludes `export/*`, `output/`, `.env`, build artifacts, and dependencies.
+
+Never push these folders to GitHub:
+
+```txt
+export/
+output/
+```
 
 Before publishing a repository, check:
 
