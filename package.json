@@ -1,0 +1,22 @@
+{
+  "name": "typescript-parser",
+  "version": "0.1.0",
+  "description": "Convert ChatGPT exports into an Obsidian-ready Markdown knowledge base.",
+  "type": "module",
+  "private": false,
+  "bin": {
+    "typescript-parser": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "bun run src/index.ts",
+    "build": "bun build ./src/index.ts --outdir ./dist --target node",
+    "start": "bun run ./dist/index.js"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "bun": ">=1.1.0"
+  }
+}
